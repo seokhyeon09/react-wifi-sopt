@@ -1,5 +1,6 @@
 import React, {useMemo, useState} from 'react'
 import wifiData from '../assets/wifi.json'
+import MapView from '../components/MapView'
 
 const MapPage = () => {
     const [q, setQ] = useState('')
@@ -22,11 +23,10 @@ const MapPage = () => {
                     <p className='text-xs text-slate-500'>내 주변 공공 와이파이</p>
                 </div>
                 {/* Map 들어갈 자리 */}
-                <div className='h-[70vh] bg-slate-100 grid place-items-center'>
+                <div className='h-[70vh]'>
                     <div className="text-center">
-                        <div className="text-sm">지도영역</div>
-                        <div className="mt-1">
-                            여기 지도 들어감
+                        <div className="mt-1 h-[100vh]">
+                            <MapView/>
                         </div>
                     </div>
                 </div>
