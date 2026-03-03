@@ -1,6 +1,18 @@
-import React from 'react'
+import React, {useMemo, useState} from 'react'
+import wifiData from '../assets/wifi.json'
 
 const MapPage = () => {
+    const [q, setQ] = useState('')
+    const filtered = useMemo (()=>{
+        const keyword = q.trim()
+
+        if(!keyword)return wifiData.slice(0,50)
+
+        return wifiData.filter(
+            (x)=>(x.name+" "+x.detail).toLowerCase().includes(keyword.toLowerCase())
+        ).slice(0,50)
+    }, [q])
+
     return (
         <div className='grid gap-4 lg:grid-cols-[1.4fr_0.6fr]'>
             {/* 지도영역 */}
@@ -23,24 +35,26 @@ const MapPage = () => {
             <aside className='border rounded-2xl bg-white shadow-sm'>
                 <div className='border-b px-4 py-3'>
                     <h2 className='text-base font-semibold'>WIFI Spots</h2>
-                    <p className='mt-1 text-xs text-slate-500'>검색/필터/목록 UI구성</p>
+                    <p className='mt-1 text-xs text-slate-500'>데이터 : {wifiData.length}건 / 표시 : {filtered.length}건</p>
                 </div>
                 <div className='flex gap-2 border-b px-4 py-3'>
                     <input
+                        value={q}
+                        onChange={(e)=>setQ(e.target.value)}
                         className='flex-3 border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-900/20 rounded-lg'
                         type="text" placeholder='장소 주소 검색' />
                     <button className='flex-1 bg-slate-900 rounded-lg px-3 py-2 text-white font-medium'>검색</button>
                 </div>
                 <ul className='max-h-[60vh] overflow-auto p-2'>
-                    {Array.from({ length: 8 }).map((_, idx) => (
+                    {filtered.map((item, idx) => (
                         <li className='rounded-xl p-3 hover:bg-slate-50 cursor-pointer'>
                             <div className='flex items-start justify-between gap-3'>
                                 <div>
-                                    <div className='text-sm font-semibold'>Public wifi spot #{idx + 1}</div>
-                                    <div className='mt-1 text-xs text-slate-500'>경기도 남양주시 진접...</div>
+                                    <div className='text-sm font-semibold'>{item.name}</div>
+                                    <div className='mt-1 text-xs text-slate-500'>{item.detail}</div>
                                 </div>
                                 <span className='rounded bg-slate-100 px-2 py-1 text-xs text-slate-600'>
-                                    0.{idx}.KM
+                                    {item.phone}
                                 </span>
                             </div>
                         </li>
