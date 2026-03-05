@@ -23,7 +23,7 @@ const MapView = ({ selectedSpot, spots = [] }) => {
 
             })
             mapInstanceRef.current = map
-            infoRef.current = new window.kakao.maps.InfoWindiw({
+            infoRef.current = new window.kakao.maps.InfoWindow({
                 zIndex: 10,
                 removable: true,
             })
@@ -87,11 +87,11 @@ const MapView = ({ selectedSpot, spots = [] }) => {
         })
     }, [ready, spots])
     useEffect(() => {
-        if (!ready || !mapInstanceRef.current || !window.kakao?.maps) return
+        if (!ready || !selectedSpot || !mapInstanceRef.current || !window.kakao?.maps) return
         const map = mapInstanceRef.current
         const { lat, lng } = selectedSpot
         const position = new window.kakao.maps.LatLng(Number(lat), Number(lng))
-        map, setCenter(position)
+        map.setCenter(position)
         map.setLevel(3)
 
         const marker = markersRef.current.find(
