@@ -2,11 +2,13 @@ import React, {useEffect, useMemo, useState} from 'react'
 import wifiData from '../assets/wifi.json'
 import MapView from '../components/MapView'
 import { useLocation } from 'react-router-dom'
+import { useFavoritesContext } from '../contexts/FavoritesContext'
 
 const MapPage = () => {
     const [q, setQ] = useState('')
     const [selectedSpot, setSelectedSpot] = useState(null)
     const {state} = useLocation()
+    const {toggle, isFavorite}=useFavoritesContext()
 
     useEffect(()=>{
         if(state?.selectedSpot){
@@ -84,6 +86,14 @@ const MapPage = () => {
                                 </div>
                                 <span className='rounded bg-slate-100 px-2 py-1 text-xs text-slate-600'>
                                     {item.phone}
+                                </span>
+                                <span
+                                    onClick={(e)=>{e.stopPropagation(); toggle(item)}}
+                                    className='cursor-pointer select-none text-lg'
+                                    role = 'button'
+                                    aria-label={isFavorite(item)?'즐겨찾기 해제':'즐겨찾기 추가'}
+                                >
+                                    {isFavorite(item)? '❤' : '♡'}
                                 </span>
                             </div>
                         </li>

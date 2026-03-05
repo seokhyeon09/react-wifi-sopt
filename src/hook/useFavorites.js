@@ -57,11 +57,13 @@ const useFavorites = () => {
         })
     },[])
 
-  return (
-    <div>
-      
-    </div>
-  )
+    const isFavorite = useCallback((spot)=>
+        favorites.some((f)=>
+            isSameSpot(f,spot)
+        )
+    ,[favorites])
+
+  return {favorites, add, remove, toggle, isFavorite}
 }
 
 export default useFavorites
